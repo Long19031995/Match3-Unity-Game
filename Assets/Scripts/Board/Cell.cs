@@ -20,10 +20,13 @@ public class Cell : MonoBehaviour
 
     public bool IsEmpty => Item == null;
 
-    public void Setup(int cellX, int cellY)
+    private Board board;
+
+    public void Setup(int cellX, int cellY, Board board)
     {
         this.BoardX = cellX;
         this.BoardY = cellY;
+        this.board = board;
     }
 
     public bool IsNeighbour(Cell other)
@@ -36,12 +39,14 @@ public class Cell : MonoBehaviour
     public void Free()
     {
         Item = null;
+        board.RemoveItem(Item);
     }
 
     public void Assign(Item item)
     {
         Item = item;
         Item.SetCell(this);
+        board.AddItem(item);
     }
 
     public void ApplyItemPosition(bool withAppearAnimation)
@@ -59,7 +64,7 @@ public class Cell : MonoBehaviour
         if (Item != null)
         {
             Item.Clear();
-            Item = null;
+            Free();
         }
     }
 
@@ -73,7 +78,7 @@ public class Cell : MonoBehaviour
         if (Item == null) return;
 
         Item.ExplodeView();
-        Item = null;
+        Free();
     }
 
     internal void AnimateItemForHint()

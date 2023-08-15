@@ -27,6 +27,24 @@ public class Board
 
     private ItemSettings itemSettings;
 
+    private int[] numberOfNormalType = new int[7];
+
+    public void AddItem(Item item)
+    {
+        if (item is NormalItem nitem)
+        {
+            numberOfNormalType[(int)nitem.ItemType]++;
+        }
+    }
+
+    public void RemoveItem(Item item)
+    {
+        if (item is NormalItem nitem)
+        {
+            numberOfNormalType[(int)nitem.ItemType]--;
+        }
+    }
+
     public Board(Transform transform, GameSettings gameSettings, ItemSettings itemSettings)
     {
         m_root = transform;
@@ -56,7 +74,7 @@ public class Board
                 go.transform.SetParent(m_root);
 
                 Cell cell = go.GetComponent<Cell>();
-                cell.Setup(x, y);
+                cell.Setup(x, y, this);
 
                 m_cells[x, y] = cell;
             }
@@ -151,7 +169,9 @@ public class Board
 
                 NormalItem item = new NormalItem();
 
-                item.SetType(Utils.GetRandomNormalType());
+                var typesExcept = Utils.GetNormalTypesExcept(GetTypesSurrounding(cell).ToArray());
+                var type = GetTypeHasLeastAmount(typesExcept);
+                item.SetType(type);
                 item.SetView(itemSettings);
                 item.SetViewRoot(m_root);
 
@@ -159,6 +179,56 @@ public class Board
                 cell.ApplyItemPosition(true);
             }
         }
+    }
+
+    internal NormalItem.eNormalType GetTypeHasLeastAmount(List<NormalItem.eNormalType> typesExcept)
+    {
+        int result = 0;
+        int min = int.MaxValue;
+        int length = Enum.GetNames(typeof(NormalItem.eNormalType)).Length;
+        for (int i = 0; i < length; i++)
+        {
+            if (typesExcept.Contains((NormalItem.eNormalType)i) && numberOfNormalType[i] < min)
+            {
+                min = numberOfNormalType[i];
+                result = i;
+            }
+        }
+        return (NormalItem.eNormalType)result;
+    }
+
+    internal List<NormalItem.eNormalType> GetTypesSurrounding(Cell cell)
+    {
+        List<NormalItem.eNormalType> types = new List<NormalItem.eNormalType>();
+        if (cell.NeighbourUp != null)
+        {
+            if (cell.NeighbourUp.Item is NormalItem nitem)
+            {
+                types.Add(nitem.ItemType);
+            }
+        }
+        if (cell.NeighbourBottom != null)
+        {
+            if (cell.NeighbourBottom.Item is NormalItem nitem)
+            {
+                types.Add(nitem.ItemType);
+            }
+        }
+        if (cell.NeighbourRight != null)
+        {
+            if (cell.NeighbourRight.Item is NormalItem nitem)
+            {
+                types.Add(nitem.ItemType);
+            }
+        }
+        if (cell.NeighbourLeft != null)
+        {
+            if (cell.NeighbourLeft.Item is NormalItem nitem)
+            {
+                types.Add(nitem.ItemType);
+            }
+        }
+        return types;
     }
 
     internal void ExplodeAllItems()

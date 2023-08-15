@@ -340,6 +340,8 @@ public class Board
                     break;
                 }
             }
+
+            if (list.Count > 0) break;
         }
 
         return list;
@@ -350,7 +352,7 @@ public class Board
         var dir = GetMatchDirection(matches);
 
         var bonus = matches.Where(x => x.Item is BonusItem).FirstOrDefault();
-        if(bonus == null)
+        if (bonus == null)
         {
             return matches;
         }

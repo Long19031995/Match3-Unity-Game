@@ -472,47 +472,6 @@ public class Board
                         break;
                     }
                 }
-
-                /* example *\
-                  * * * * *
-                  * * * * *
-                  * * ? * *
-                  * & * & *
-                  * * ? * *
-                \* example  */
-                Cell neib = cell.NeighbourRight;
-                if (neib != null && neib.NeighbourRight != null && neib.NeighbourRight.IsSameType(cell))
-                {
-                    Cell second = LookForTheSecondCellVertical(neib, cell);
-                    if (second != null)
-                    {
-                        result.Add(cell);
-                        result.Add(neib.NeighbourRight);
-                        result.Add(second);
-                        break;
-                    }
-                }
-
-                /* example *\
-                  * * * * *
-                  * & * * *
-                  ? * ? * *
-                  * & * * *
-                  * * * * *
-                \* example  */
-                neib = null;
-                neib = cell.NeighbourUp;
-                if (neib != null && neib.NeighbourUp != null && neib.NeighbourUp.IsSameType(cell))
-                {
-                    Cell second = LookForTheSecondCellHorizontal(neib, cell);
-                    if (second != null)
-                    {
-                        result.Add(cell);
-                        result.Add(neib.NeighbourUp);
-                        result.Add(second);
-                        break;
-                    }
-                }
             }
 
             if (result.Count > 0) break;

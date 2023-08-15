@@ -20,6 +20,27 @@ public class BonusItem : Item
         ItemType = type;
     }
 
+    protected override GameObject GetPrefab(ItemSettings itemSettings)
+    {
+        GameObject prefab = null;
+        switch (ItemType)
+        {
+            case eBonusType.NONE:
+                break;
+            case eBonusType.HORIZONTAL:
+                prefab = itemSettings.ItemBonusHorizontal;
+                break;
+            case eBonusType.VERTICAL:
+                prefab = itemSettings.ItemBonusVertical;
+                break;
+            case eBonusType.ALL:
+                prefab = itemSettings.ItemBonusBomb;
+                break;
+        }
+
+        return prefab;
+    }
+
     protected override string GetPrefabName()
     {
         string prefabname = string.Empty;

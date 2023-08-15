@@ -22,6 +22,37 @@ public class NormalItem : Item
         ItemType = type;
     }
 
+    protected override GameObject GetPrefab(ItemSettings itemSettings)
+    {
+        GameObject prefab = null;
+        switch (ItemType)
+        {
+            case eNormalType.TYPE_ONE:
+                prefab = itemSettings.ItemNormal01;
+                break;
+            case eNormalType.TYPE_TWO:
+                prefab = itemSettings.ItemNormal02;
+                break;
+            case eNormalType.TYPE_THREE:
+                prefab = itemSettings.ItemNormal03;
+                break;
+            case eNormalType.TYPE_FOUR:
+                prefab = itemSettings.ItemNormal04;
+                break;
+            case eNormalType.TYPE_FIVE:
+                prefab = itemSettings.ItemNormal05;
+                break;
+            case eNormalType.TYPE_SIX:
+                prefab = itemSettings.ItemNormal06;
+                break;
+            case eNormalType.TYPE_SEVEN:
+                prefab = itemSettings.ItemNormal07;
+                break;
+        }
+
+        return prefab;
+    }
+
     protected override string GetPrefabName()
     {
         string prefabname = string.Empty;

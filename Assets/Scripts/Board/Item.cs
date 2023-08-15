@@ -11,20 +11,17 @@ public class Item
 
     public Transform View { get; private set; }
 
-
-    public virtual void SetView()
+    public virtual void SetView(ItemSettings itemSettings)
     {
-        string prefabname = GetPrefabName();
+        GameObject prefab = GetPrefab(itemSettings);
 
-        if (!string.IsNullOrEmpty(prefabname))
+        if (prefab)
         {
-            GameObject prefab = Resources.Load<GameObject>(prefabname);
-            if (prefab)
-            {
-                View = GameObject.Instantiate(prefab).transform;
-            }
+            View = GameObject.Instantiate(prefab).transform;
         }
     }
+
+    protected virtual GameObject GetPrefab(ItemSettings itemSettings) { return null; }
 
     protected virtual string GetPrefabName() { return string.Empty; }
 

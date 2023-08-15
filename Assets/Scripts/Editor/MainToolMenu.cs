@@ -30,4 +30,27 @@ public class MainToolMenu
         Selection.activeObject = asset;
     }
 
+    [MenuItem(menuTitle + "!! Create Item Settings !!", false, 530)]
+    static void CreateItemData()
+    {
+        ItemSettings asset = ScriptableObject.CreateInstance<ItemSettings>();
+
+        AssetDatabase.CreateAsset(asset, "Assets/Resources/itemsettings.asset");
+        AssetDatabase.SaveAssets();
+
+        EditorUtility.FocusProjectWindow();
+
+        Selection.activeObject = asset;
+    }
+
+
+    [MenuItem(menuTitle + "Open Item Settings", false, 410)]
+    static void OpenItemData()
+    {
+        ItemSettings asset = Resources.Load<ItemSettings>("itemsettings");
+
+        EditorUtility.FocusProjectWindow();
+        Selection.activeObject = asset;
+    }
+
 }
